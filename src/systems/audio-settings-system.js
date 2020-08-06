@@ -55,6 +55,12 @@ export class AudioSettingsSystem {
         preferences: { globalRolloffFactor: 1.0 }
       });
     }
+    if (window.APP.store.state.preferences.audioNormalization !== false) {
+      //hack to always reset to false
+      window.APP.store.update({
+        preferences: { audioNormalization: false }
+      });
+    }
 
     this.audioOutputMode = window.APP.store.state.preferences.audioOutputMode;
     this.globalRolloffFactor = window.APP.store.state.preferences.globalRolloffFactor;

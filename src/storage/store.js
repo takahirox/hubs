@@ -71,6 +71,7 @@ export const SCHEMA = {
         muteMicOnEntry: { type: "bool" },
         audioOutputMode: { type: "string" },
         globalRolloffFactor: { type: "number" },
+        audioNormalization: { type: "bool" },
         invertTouchscreenCameraMove: { type: "bool" },
         enableOnScreenJoystickLeft: { type: "bool" },
         enableOnScreenJoystickRight: { type: "bool" },

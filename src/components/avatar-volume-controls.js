@@ -18,6 +18,7 @@ AFRAME.registerComponent("avatar-volume-controls", {
     this.volumeUpButton.object3D.addEventListener("interact", this.volumeUp);
     this.volumeDownButton.object3D.addEventListener("interact", this.volumeDown);
     this.update = this.update.bind(this);
+    this.audioAnalyser = null;
     window.APP.store.addEventListener("statechanged", this.update);
 
     this.updateVolumeLabel();
@@ -50,9 +51,36 @@ AFRAME.registerComponent("avatar-volume-controls", {
         return;
       }
 
+      if (!this.audioAnalyser) {
+        this.audioAnalyser = new THREE.AudioAnalyser(audio, 32);
+        audio.getOutput().disconnect(this.audioAnalyser.analyser);
+        audio.source.connect(this.audioAnalyser.analyser);
+        this.avatarAudioSource.el.addEventListener("sound-source-set", () => {
+          const audio = this.avatarAudioSource && this.avatarAudioSource.el.getObject3D(this.avatarAudioSource.attrName);
+          if (audio) {
+            this.audioAnalyser = new THREE.AudioAnalyser(audio, 32);
+            audio.getOutput().disconnect(this.audioAnalyser.analyser);
+            audio.source.connect(this.audioAnalyser.analyser);
+          }
+        });
+      }
+
       const { audioOutputMode, globalVoiceVolume, globalRolloffFactor } = window.APP.store.state.preferences;
       const volumeModifier = (globalVoiceVolume !== undefined ? globalVoiceVolume : 100) / 100;
       let gain = volumeModifier * this.data.volume;
+
+      if (window.APP.store.state.preferences.audioNormalization) {
+        let sum = 0;
+        const frequencyData = this.audioAnalyser.getFrequencyData();
+        frequencyData.forEach(d => sum += d);
+        const average = sum / frequencyData.length;
+        const threshold = 5.0;
+        if (average >= threshold) {
+          gain = gain * Math.pow(100, 3) / Math.pow(average, 3);
+        }
+        console.log(average, gain);
+      }
+
       if (audioOutputMode === "audio") {
         this.avatarAudioSource.el.object3D.getWorldPosition(positionA);
         this.el.sceneEl.camera.getWorldPosition(positionB);
