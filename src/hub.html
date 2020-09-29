@@ -24,6 +24,26 @@
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     }
     </script>
+    <script>
+      const GFXTESTS_CONFIG = {
+        id: 'hubs',
+        engine: 'Hubs',
+        url: 'https://localhost:8080/hub.html?hub_id=ZsdhzTZ',
+        name: 'Hubs',
+        mobile: true,
+        apis: [
+          'WebGL',
+          'WebVR'
+        ],
+        numFrames: 800,
+        interactive: true,
+        serverIP: '10.0.0.60',
+        skipReferenceImageTest: true,
+        hasTestCode: true
+      };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://localhost:3000/webgfx-tests.js"></script>
 </head>
 
 <body>
@@ -55,6 +75,11 @@
         set-max-resolution
         light="defaultLightsEnabled: false"
     >
+
+    <script>
+      document.getElementsByTagName('canvas')[0].id = 'hubs-canvas';
+    </script>
+
         <a-assets>
             <img id="presence-count" crossorigin="anonymous" src="./assets/hud/presence-count.png">
             <img id="action-button" crossorigin="anonymous" src="./assets/hud/action_button.9.png">
