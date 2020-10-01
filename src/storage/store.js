@@ -76,6 +76,7 @@ export const SCHEMA = {
         enableOnScreenJoystickLeft: { type: "bool" },
         enableOnScreenJoystickRight: { type: "bool" },
         onlyShowNametagsInFreeze: { type: "bool" },
+        animateWaypointTransitions: { type: "bool" },
         allowMultipleHubsInstances: { type: "bool" },
         disableIdleDetection: { type: "bool" },
         preferMobileObjectInfoPanel: { type: "bool" },
@@ -95,7 +96,8 @@ export const SCHEMA = {
         movementSpeedModifier: { type: "number" },
         disableEchoCancellation: { type: "bool" },
         disableNoiseSuppression: { type: "bool" },
-        disableAutoGainControl: { type: "bool" }
+        disableAutoGainControl: { type: "bool" },
+        locale: { type: "string" }
       }
     },
 
@@ -328,5 +330,20 @@ export default class Store extends EventTarget {
     this.dispatchEvent(new CustomEvent("statechanged"));
 
     return finalState;
+  }
+
+  get materialQualitySetting() {
+    if (this.state.preferences.materialQualitySetting) {
+      return this.state.preferences.materialQualitySetting;
+    }
+
+    const isMobile = AFRAME.utils.device.isMobile();
+    const isMobileVR = AFRAME.utils.device.isMobileVR();
+
+    if (isMobile || isMobileVR) {
+      return "low";
+    }
+
+    return "high";
   }
 }
