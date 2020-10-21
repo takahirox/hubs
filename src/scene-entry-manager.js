@@ -122,6 +122,7 @@ export default class SceneEntryManager {
     setTimeout(() => this.store.bumpEntryCount(), 30000);
 
     this.scene.addState("entered");
+    this.scene.emit("entered");
 
     if (muteOnEntry) {
       this.scene.emit("action_mute");
