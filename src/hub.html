@@ -28,18 +28,19 @@
       const GFXTESTS_CONFIG = {
         id: 'hubs',
         engine: 'Hubs',
-        url: 'https://localhost:8080/hub.html?hub_id=ZsdhzTZ',
+        url: 'https://localhost:8080/hub.html?hub_id=ZsdhzTZ&vr_entry_type=2d_now&custom-start#Spawn_Point',
         name: 'Hubs',
         mobile: true,
         apis: [
           'WebGL',
           'WebVR'
         ],
-        numFrames: 800,
         interactive: true,
         serverIP: '10.0.0.60',
         skipReferenceImageTest: true,
-        hasTestCode: true
+        hasTestCode: true,
+        customStart: true,
+        canvasId: 'hubs-canvas'
       };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
@@ -1331,6 +1332,13 @@
     </a-scene>
 
     <div id="ui-root"></div>
+
+    <script>
+      const scene = document.getElementsByTagName('a-scene')[0];
+      scene.addEventListener('entered', event => {
+        TESTER.appReady = true;
+      });
+    </script>
 </body>
 
 </html>
