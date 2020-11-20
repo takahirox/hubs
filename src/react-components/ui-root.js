@@ -1538,7 +1538,7 @@ class UIRoot extends Component {
     });
 
     // MobileVR browsers always show settings panel as an overlay when exiting immersive mode.
-    const showSettingsAsOverlay = entered && isMobileVR;
+    const showSettingsAsOverlay = false; //entered && isMobileVR;
 
     const presenceLogEntries = this.props.presenceLogEntries || [];
 
