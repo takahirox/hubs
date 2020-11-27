@@ -202,8 +202,10 @@ module.exports = async (env, argv) => {
         appConfig = await fetchAppConfigAndEnvironmentVars();
       }
     } else {
-      // Use the default app config with all featured enabled.
-      appConfig = createDefaultAppConfig();
+      if (!env.localDev) {
+        // Use the default app config with all features enabled.
+        appConfig = createDefaultAppConfig();
+      }
     }
 
     if (env.localDev) {
@@ -231,7 +233,8 @@ module.exports = async (env, argv) => {
     plugins: [
       "@babel/proposal-class-properties",
       "@babel/proposal-object-rest-spread",
-      "@babel/plugin-transform-async-to-generator"
+      "@babel/plugin-transform-async-to-generator",
+      "@babel/plugin-proposal-optional-chaining"
     ]
   };
 

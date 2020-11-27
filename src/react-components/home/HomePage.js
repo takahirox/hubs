@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { FormattedMessage, addLocaleData } from "react-intl";
-import en from "react-intl/locale-data/en";
+import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 import configs from "../../utils/configs";
 import IfFeature from "../if-feature";
@@ -15,8 +14,6 @@ import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import { MediaGrid } from "./MediaGrid";
 import { RoomTile } from "./RoomTile";
-
-addLocaleData([...en]);
 
 export function HomePage() {
   const auth = useContext(AuthContext);
@@ -77,6 +74,39 @@ export function HomePage() {
           <PWAButton />
         </div>
       </section>
+      {featuredRooms.length === 0 && (
+        <IfFeature name="show_feature_panels">
+          <section className={classNames(styles.features, styles.colLg, styles.centerLg)}>
+            <div className={styles.center}>
+              <h3>
+                <FormattedMessage id="home.rooms_title" />
+              </h3>
+              <img src={configs.image("landing_rooms_thumb")} />
+              <p>
+                <FormattedMessage id="home.rooms_blurb" />
+              </p>
+            </div>
+            <div className={styles.center}>
+              <h3>
+                <FormattedMessage id="home.communicate_title" />
+              </h3>
+              <img src={configs.image("landing_communicate_thumb")} />
+              <p>
+                <FormattedMessage id="home.communicate_blurb" />
+              </p>
+            </div>
+            <div className={styles.center}>
+              <h3>
+                <FormattedMessage id="home.media_title" />
+              </h3>
+              <img src={configs.image("landing_media_thumb")} />
+              <p>
+                <FormattedMessage id="home.media_blurb" />
+              </p>
+            </div>
+          </section>
+        </IfFeature>
+      )}
       {featuredRooms.length > 0 && (
         <section className={styles.featuredRooms}>
           <MediaGrid>{featuredRooms.map(room => <RoomTile key={room.id} room={room} />)}</MediaGrid>
